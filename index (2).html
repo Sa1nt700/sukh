@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markets of Migration: Food, Language, and Cultural Spaces</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--ember:#C4501A;--saffron:#D4842A;--turmeric:#E2A832;--olive:#5B6B3C;--plum:#4A2040;--deep:#1A1614;--night:#121010;--cream:#F8F1E6;--sand:#E8DDD0;--warm:#FFFAF3;--clay:#8B7A6B;--smoke:#6B6058;--bone:#D9CFC3;--wine:#6B2D3E}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Space Grotesk',sans-serif;background:var(--warm);color:var(--deep);line-height:1.8;overflow-x:hidden}
+
+/* ═══ NAVBAR ═══ */
+.nav{position:fixed;top:0;left:0;width:100%;z-index:1000;transition:all .4s}
+.nav--top{background:transparent}
+.nav--scrolled{background:rgba(18,16,16,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 4px 30px rgba(0,0,0,0.15)}
+.nav-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:76px}
+.nav-brand{display:flex;align-items:center;gap:16px;cursor:pointer;text-decoration:none}
+.nav-logo-wrap{position:relative;width:44px;height:44px}
+.nav-logo-bg{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--ember),var(--turmeric));position:absolute;top:0;left:0;transition:transform .3s}
+.nav-brand:hover .nav-logo-bg{transform:rotate(8deg)}
+.nav-logo-letter{position:absolute;top:0;left:0;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:1.3rem;color:white;font-weight:700;z-index:2}
+.nav-text{display:flex;flex-direction:column;line-height:1.2}
+.nav-text-top{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--cream);letter-spacing:.02em}
+.nav-text-bottom{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--turmeric);font-weight:500}
+
+.nav-links{display:flex;align-items:center;gap:8px}
+.nav-link{color:var(--bone);text-decoration:none;font-size:.82rem;padding:8px 16px;border-radius:100px;transition:all .3s;letter-spacing:.02em;font-weight:400}
+.nav-link:hover{color:var(--turmeric);background:rgba(255,255,255,0.06)}
+.nav-divider{width:1px;height:20px;background:rgba(255,255,255,0.12);margin:0 4px}
+.menu-btn{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--ember),var(--saffron));border:none;padding:10px 22px;border-radius:100px;cursor:pointer;color:white;font-family:'Space Grotesk',sans-serif;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;transition:all .3s;box-shadow:0 4px 16px rgba(196,80,26,0.25)}
+.menu-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(196,80,26,0.35)}
+.menu-btn svg{width:16px;height:16px;fill:currentColor}
+
+/* ═══ FULLSCREEN MENU ═══ */
+.fullmenu{position:fixed;inset:0;background:var(--night);z-index:2000;opacity:0;pointer-events:none;transition:opacity .4s;display:flex}
+.fullmenu.open{opacity:1;pointer-events:all}
+.fullmenu-left{flex:1;padding:90px 60px 48px;overflow-y:auto}
+.fullmenu-right{width:400px;background:linear-gradient(180deg,var(--plum),var(--deep));padding:90px 44px 48px;display:flex;flex-direction:column;justify-content:center}
+.fullmenu-close{position:absolute;top:24px;right:32px;background:rgba(255,255,255,0.06);border:none;color:var(--bone);font-size:1.5rem;cursor:pointer;z-index:2100;width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .2s}
+.fullmenu-close:hover{background:rgba(255,255,255,0.12);color:var(--turmeric)}
+.menu-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.25em;color:var(--turmeric);margin-bottom:12px;margin-top:32px;font-weight:600}
+.menu-label:first-child{margin-top:0}
+.menu-link{display:flex;align-items:baseline;gap:16px;text-decoration:none;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.04);transition:all .25s;cursor:pointer}
+.menu-link:hover{padding-left:14px}
+.menu-link:hover .ml-title{color:var(--turmeric)}
+.ml-num{font-family:'DM Serif Display',serif;font-size:.85rem;color:rgba(255,255,255,0.2);min-width:30px}
+.ml-title{font-size:1.2rem;color:var(--cream);font-weight:400;transition:color .2s}
+.menu-info-title{font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--cream);margin-bottom:16px;line-height:1.3}
+.menu-info-text{color:var(--bone);font-size:.9rem;line-height:1.9;opacity:.7}
+.menu-info-tag{display:inline-block;margin-top:24px;padding:8px 22px;border:1px solid var(--turmeric);border-radius:50px;color:var(--turmeric);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase}
+
+/* ═══ HERO ═══ */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:80px 70px 60px 90px;position:relative;z-index:2}
+.hero-right{position:relative;background:linear-gradient(160deg,var(--deep) 0%,var(--plum) 40%,var(--wine) 70%,#1a1510 100%);overflow:hidden;display:flex;align-items:center;justify-content:center}
+.hero-right::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 25% 35%,rgba(196,80,26,0.2),transparent 50%),radial-gradient(circle at 75% 65%,rgba(226,168,50,0.12),transparent 45%),radial-gradient(circle at 50% 90%,rgba(91,107,60,0.12),transparent 45%)}
+.hero-pattern{position:absolute;inset:0;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5L35 15L45 15L37 22L40 32L30 26L20 32L23 22L15 15L25 15Z' fill='%23E2A832'/%3E%3C/svg%3E")}
+.hero-float{position:absolute;z-index:1;opacity:.06;font-size:7rem;color:var(--turmeric);font-family:'DM Serif Display',serif;line-height:1;user-select:none}
+.hero-float.f1{top:12%;left:8%;animation:drift 10s ease infinite}
+.hero-float.f2{bottom:18%;right:8%;animation:drift 13s ease infinite reverse;font-size:5rem}
+.hero-float.f3{top:45%;left:45%;animation:drift 16s ease infinite;font-size:9rem}
+.hero-float.f4{top:70%;left:15%;animation:drift 11s ease infinite;font-size:4rem;opacity:.04}
+@keyframes drift{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-18px) rotate(3deg)}}
+.hero-right-content{position:relative;z-index:2;text-align:center;padding:40px}
+.hero-right-quote{font-family:'Cormorant Garamond',serif;font-size:1.65rem;font-style:italic;color:var(--cream);opacity:.85;line-height:1.5;max-width:340px}
+.hero-right-line{width:50px;height:2px;background:linear-gradient(90deg,var(--turmeric),var(--ember));margin:24px auto}
+.hero-right-attr{color:var(--bone);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;opacity:.45}
+.hero-tag{display:inline-flex;align-items:center;gap:10px;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ember);font-weight:600;margin-bottom:32px;animation:fadeIn .8s ease forwards;opacity:0}
+.hero-tag::before{content:'';width:36px;height:1.5px;background:var(--ember)}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(3.2rem,5.8vw,5.5rem);font-weight:400;line-height:1.03;margin-bottom:14px;animation:fadeIn .8s ease .15s forwards;opacity:0}
+.hero h1 em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--ember);font-weight:500}
+.hero-sub{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--smoke);margin-bottom:36px;max-width:440px;line-height:1.65;font-style:italic;animation:fadeIn .8s ease .3s forwards;opacity:0}
+.hero-actions{display:flex;align-items:center;gap:18px;animation:fadeIn .8s ease .45s forwards;opacity:0}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;padding:16px 38px;background:var(--deep);color:var(--cream);font-weight:600;font-size:.88rem;border-radius:100px;letter-spacing:.04em;cursor:pointer;transition:all .3s;border:none;font-family:'Space Grotesk',sans-serif;text-decoration:none}
+.btn-primary:hover{background:var(--ember);transform:translateY(-2px)}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:16px 28px;background:none;color:var(--deep);font-weight:500;font-size:.88rem;border:1.5px solid var(--bone);border-radius:100px;cursor:pointer;transition:all .3s;font-family:'Space Grotesk',sans-serif;text-decoration:none}
+.btn-ghost:hover{border-color:var(--ember);color:var(--ember)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══ SECTIONS ═══ */
+.section{padding:100px 40px;max-width:1200px;margin:0 auto;position:relative}
+.section-dark{background:var(--deep);max-width:100%;padding:100px 40px}
+.section-dark .s-inner{max-width:1200px;margin:0 auto}
+.section-cream{background:var(--cream);max-width:100%;padding:100px 40px}
+.section-cream .s-inner{max-width:1200px;margin:0 auto}
+.section-accent{background:linear-gradient(135deg,var(--plum),var(--deep));max-width:100%;padding:100px 40px}
+.section-accent .s-inner{max-width:1200px;margin:0 auto}
+
+.s-label{display:inline-flex;align-items:center;gap:12px;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;margin-bottom:20px}
+.s-label--ember{color:var(--ember)}
+.s-label--ember::before{content:'';width:28px;height:1.5px;background:var(--ember)}
+.s-label--gold{color:var(--turmeric)}
+.s-label--gold::before{content:'';width:28px;height:1.5px;background:var(--turmeric)}
+.s-label--light{color:var(--turmeric)}
+.s-label--light::before{content:'';width:28px;height:1.5px;background:var(--turmeric)}
+
+.s-title{font-family:'DM Serif Display',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:400;line-height:1.2;margin-bottom:24px}
+.s-title--dark{color:var(--cream)}
+.s-lead{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;line-height:1.7;max-width:640px;margin-bottom:32px}
+.s-lead--light{color:var(--bone);opacity:.8}
+.s-text{font-size:1.02rem;color:var(--smoke);margin-bottom:18px;max-width:720px}
+.s-text--light{color:var(--bone);opacity:.75}
+
+.s-grid{display:grid;grid-template-columns:280px 1fr;gap:60px;align-items:start}
+.s-sidebar{position:sticky;top:100px}
+
+.s-quote{border-left:3px solid var(--turmeric);padding:20px 0 20px 28px;margin:32px 0;font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-style:italic;color:var(--smoke);line-height:1.6}
+.s-quote cite{display:block;margin-top:10px;font-size:.82rem;font-style:normal;font-family:'Space Grotesk',sans-serif;color:var(--clay);letter-spacing:.03em}
+
+/* stat cards */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:40px 0}
+.stat-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:28px 24px;text-align:center}
+.stat-num{font-family:'DM Serif Display',serif;font-size:2.4rem;color:var(--turmeric);line-height:1;margin-bottom:6px}
+.stat-label{font-size:.82rem;color:var(--bone);opacity:.6}
+
+/* case study cards */
+.case-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.case-card{background:var(--warm);border-radius:16px;overflow:hidden;transition:transform .3s,box-shadow .3s}
+.case-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,0.08)}
+.case-top{padding:32px 28px 20px;border-bottom:1px solid var(--sand)}
+.case-flag{font-size:2.2rem;margin-bottom:12px}
+.case-card h3{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--deep);margin-bottom:8px}
+.case-card p{font-size:.92rem;color:var(--smoke);line-height:1.6}
+.case-body{padding:20px 28px 28px}
+
+/* team grid */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:18px;margin-top:32px}
+.member-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:28px 16px 20px;text-align:center;transition:all .25s}
+.member-card:hover{transform:translateY(-4px);background:rgba(255,255,255,0.07)}
+.member-photo{width:70px;height:70px;border-radius:50%;margin:0 auto 12px;background:linear-gradient(135deg,var(--ember),var(--turmeric));display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:1.4rem;color:white;overflow:hidden}
+.member-photo img{width:100%;height:100%;object-fit:cover}
+.member-card h4{font-family:'DM Serif Display',serif;font-size:.95rem;color:var(--cream);font-weight:400;margin-bottom:2px}
+.member-role{font-size:.72rem;color:var(--turmeric);font-weight:600;letter-spacing:.04em}
+
+/* challenges list */
+.challenge-item{display:flex;gap:20px;margin-bottom:28px;align-items:flex-start}
+.challenge-icon{width:48px;height:48px;border-radius:12px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.challenge-item h3{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--deep);margin-bottom:4px;font-weight:400}
+.challenge-item p{font-size:.92rem;color:var(--smoke)}
+
+/* video */
+.video-wrap{text-align:center;margin-top:32px}
+.play-btn{display:inline-flex;align-items:center;gap:14px;padding:20px 48px;background:linear-gradient(135deg,var(--ember),var(--saffron));color:white;border:none;border-radius:100px;font-size:1.05rem;font-weight:600;cursor:pointer;transition:all .3s;font-family:'Space Grotesk',sans-serif;box-shadow:0 8px 32px rgba(196,80,26,0.3)}
+.play-btn:hover{transform:scale(1.05);box-shadow:0 12px 40px rgba(196,80,26,0.4)}
+.play-btn svg{width:22px;height:22px;fill:white}
+.play-btn.hidden{display:none}
+.video-frame{display:none;position:relative;padding-bottom:56.25%;height:0;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);margin-top:20px}
+.video-frame.visible{display:block}
+.video-frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+
+/* references */
+.ref-list{list-style:none;padding:0}
+.ref-list li{font-size:.9rem;color:var(--smoke);margin-bottom:14px;padding-left:28px;text-indent:-28px;line-height:1.6}
+
+/* color divider */
+.color-divider{height:4px;background:linear-gradient(90deg,var(--ember),var(--turmeric),var(--olive),var(--plum),var(--wine))}
+
+/* footer */
+.site-footer{background:var(--night);padding:60px 40px;text-align:center;position:relative}
+.site-footer::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--ember),var(--turmeric),var(--olive),var(--plum))}
+.footer-brand{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--cream);margin-bottom:8px}
+.footer-info{color:var(--clay);font-size:.82rem;margin-bottom:16px}
+.footer-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
+.footer-links a{color:var(--bone);font-size:.8rem;text-decoration:none;opacity:.5;transition:opacity .2s;cursor:pointer}
+.footer-links a:hover{opacity:1;color:var(--turmeric)}
+
+/* responsive */
+@media(max-width:900px){
+.hero{grid-template-columns:1fr}.hero-right{min-height:320px}.hero-left{padding:40px 28px}
+.s-grid{grid-template-columns:1fr;gap:20px}.s-sidebar{position:static}
+.stat-row{grid-template-columns:1fr}.case-cards{grid-template-columns:1fr}
+.fullmenu-right{display:none}.nav-links{display:none}
+}
+@media(max-width:600px){
+.hero-left{padding:32px 20px}.hero-actions{flex-direction:column;align-items:flex-start}
+.section,.section-dark,.section-cream,.section-accent{padding:60px 20px}
+.team-grid{grid-template-columns:repeat(2,1fr)}.nav-inner{padding:0 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav class="nav nav--top" id="navbar">
+<div class="nav-inner">
+  <a class="nav-brand" href="#hero">
+    <div class="nav-logo-wrap"><div class="nav-logo-bg"></div><div class="nav-logo-letter">M</div></div>
+    <div class="nav-text"><span class="nav-text-top">Markets of Migration</span><span class="nav-text-bottom">Food &middot; Language &middot; Culture</span></div>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="#overview">Overview</a>
+    <a class="nav-link" href="#history">History</a>
+    <a class="nav-link" href="#cases">Cases</a>
+    <a class="nav-link" href="#team-section">Team</a>
+    <div class="nav-divider"></div>
+    <button class="menu-btn" onclick="openMenu()"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" fill="none"/></svg> All</button>
+  </div>
+</div>
+</nav>
+
+<!-- ═══ FULLSCREEN MENU ═══ -->
+<div class="fullmenu" id="fullmenu">
+<button class="fullmenu-close" onclick="closeMenu()">&times;</button>
+<div class="fullmenu-left">
+  <div class="menu-label">Start</div>
+  <a class="menu-link" href="#hero" onclick="closeMenu()"><span class="ml-num">&mdash;</span><span class="ml-title">Home</span></a>
+  <div class="menu-label">Chapters</div>
+  <a class="menu-link" href="#overview" onclick="closeMenu()"><span class="ml-num">01</span><span class="ml-title">Project Overview</span></a>
+  <a class="menu-link" href="#research" onclick="closeMenu()"><span class="ml-num">02</span><span class="ml-title">Research Questions &amp; Goals</span></a>
+  <a class="menu-link" href="#history" onclick="closeMenu()"><span class="ml-num">03</span><span class="ml-title">History of Migrant Markets</span></a>
+  <a class="menu-link" href="#food" onclick="closeMenu()"><span class="ml-num">04</span><span class="ml-title">Food &amp; Cultural Identity</span></a>
+  <a class="menu-link" href="#language" onclick="closeMenu()"><span class="ml-num">05</span><span class="ml-title">Language in Markets</span></a>
+  <a class="menu-link" href="#economic" onclick="closeMenu()"><span class="ml-num">06</span><span class="ml-title">Economic Opportunities</span></a>
+  <a class="menu-link" href="#challenges" onclick="closeMenu()"><span class="ml-num">07</span><span class="ml-title">Challenges Migrants Face</span></a>
+  <div class="menu-label">Case Studies</div>
+  <a class="menu-link" href="#cases" onclick="closeMenu()"><span class="ml-num">08–10</span><span class="ml-title">USA, Europe &amp; Asia</span></a>
+  <div class="menu-label">Final</div>
+  <a class="menu-link" href="#engagement" onclick="closeMenu()"><span class="ml-num">11</span><span class="ml-title">Public Engagement</span></a>
+  <a class="menu-link" href="#conclusion" onclick="closeMenu()"><span class="ml-num">12</span><span class="ml-title">Conclusion &amp; References</span></a>
+  <div class="menu-label">Team</div>
+  <a class="menu-link" href="#video-section" onclick="closeMenu()"><span class="ml-num">&#9654;</span><span class="ml-title">Project Video</span></a>
+  <a class="menu-link" href="#team-section" onclick="closeMenu()"><span class="ml-num">&#9733;</span><span class="ml-title">Meet the Team</span></a>
+  <a class="menu-link" href="#reflections" onclick="closeMenu()"><span class="ml-num">&#10022;</span><span class="ml-title">Reflections</span></a>
+</div>
+<div class="fullmenu-right">
+  <div class="menu-info-title">Food, Language, and Cultural Spaces</div>
+  <p class="menu-info-text">A collaborative exploration of immigrant food markets as multilingual, multicultural spaces reflecting migration patterns and cultural identity.</p>
+  <div class="menu-info-tag">Thursday Section &middot; 2026</div>
+</div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="hero">
+<div class="hero-left">
+  <div class="hero-tag">Thursday Section &middot; Media History</div>
+  <h1>Markets<br>of <em>Migration</em></h1>
+  <p class="hero-sub">Exploring immigrant food markets and grocery stores as multilingual, multicultural spaces that reflect migration patterns and cultural identity.</p>
+  <div class="hero-actions">
+    <a class="btn-primary" href="#overview">Explore the Project &darr;</a>
+    <a class="btn-ghost" href="#team-section">Meet the Team</a>
+  </div>
+</div>
+<div class="hero-right">
+  <div class="hero-pattern"></div>
+  <div class="hero-float f1">&#1605;</div>
+  <div class="hero-float f2">&#39135;</div>
+  <div class="hero-float f3">M</div>
+  <div class="hero-float f4">&#1086;</div>
+  <div class="hero-right-content">
+    <p class="hero-right-quote">"Walk into any immigrant food market and you step into a living map of human migration."</p>
+    <div class="hero-right-line"></div>
+    <p class="hero-right-attr">A Collaborative Study by 13 Students</p>
+  </div>
+</div>
+</section>
+
+<div class="color-divider"></div>
+
+<!-- ═══ 01 PROJECT OVERVIEW ═══ -->
+<section class="section" id="overview">
+<div class="s-grid">
+  <div class="s-sidebar">
+    <div class="s-label s-label--ember">01 &middot; Project Overview</div>
+  </div>
+  <div>
+    <h2 class="s-title">What Are Migrant Markets &mdash; and Why Do They Matter?</h2>
+    <p class="s-lead">Migrant markets are far more than places where food is bought and sold. They are living archives of human movement, cultural memory, and resilience.</p>
+    <p class="s-text">Immigrant food markets and grocery stores represent some of the most vibrant multicultural spaces in modern cities. From the spice shops of Brooklyn to the night markets of Kuala Lumpur, these spaces serve as gathering points where languages mix, traditions are preserved, and new cultural identities are forged. Scholars describe them as "third places" &mdash; spaces outside the home and workplace where community life unfolds (Oldenburg, 1989).</p>
+    <p class="s-text">These markets are often the first businesses that immigrant communities establish in a new country. They provide familiar foods, ingredients, and social connections that help newcomers navigate the challenges of resettlement. In doing so, they become anchors of cultural continuity, bridging the old world and the new (Manzo, 2005).</p>
+    <p class="s-text">This project matters because, in an era of increasing globalization and migration, understanding how cultural spaces function helps us appreciate the contributions immigrants make to the social, economic, and cultural fabric of their host societies. Food markets are windows into the lived experience of migration &mdash; the tastes of home carried across borders.</p>
+    <div class="s-quote">"Food is the most universal language. It speaks of home, identity, and belonging in ways that transcend borders."<cite>&mdash; Psyche Williams-Forson, food studies scholar</cite></div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ 02 RESEARCH QUESTIONS ═══ -->
+<div class="section-cream" id="research">
+<div class="s-inner">
+  <div class="s-grid">
+    <div class="s-sidebar">
+      <div class="s-label s-label--ember">02 &middot; Research Questions</div>
+    </div>
+    <div>
+      <h2 class="s-title">Research Questions &amp; Goals</h2>
+      <p class="s-lead">Our research is guided by the desire to understand how migrant food markets function as cultural, linguistic, and economic institutions.</p>
+      <p class="s-text">This project investigates the intersection of food, language, and cultural identity within immigrant communities. We ask how these marketplaces serve not only as commercial enterprises but as spaces of cultural negotiation and preservation.</p>
+      <p class="s-text"><strong>Core research questions:</strong></p>
+      <p class="s-text">1. How do immigrant food markets reflect and preserve the cultural identities of migrant communities?</p>
+      <p class="s-text">2. What role does multilingualism play in shaping communication and commerce within these spaces?</p>
+      <p class="s-text">3. How do migrant food markets contribute economically to both immigrant communities and the broader host society?</p>
+      <p class="s-text">4. What barriers &mdash; legal, social, and cultural &mdash; do migrant entrepreneurs face in establishing and sustaining food businesses?</p>
+      <p class="s-text">5. How do these markets foster intercultural exchange and community building across different societies (USA, Europe, Asia)?</p>
+      <p class="s-text">Our goal is to present a comprehensive, cross-cultural analysis supported by case studies from three continents, demonstrating that migrant food markets are essential institutions of integration and cultural survival.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ 03 HISTORY ═══ -->
+<section class="section" id="history">
+<div class="s-grid">
+  <div class="s-sidebar">
+    <div class="s-label s-label--ember">03 &middot; History</div>
+  </div>
+  <div>
+    <h2 class="s-title">The History of Migrant Markets</h2>
+    <p class="s-lead">From ancient Silk Road caravanserais to modern ethnic grocery chains, migrant markets have shaped the food landscapes of civilizations for millennia.</p>
+    <p class="s-text">The history of migrant food markets is inseparable from the history of human migration itself. Ancient trade routes like the Silk Road (circa 130 BCE–1453 CE) created sprawling bazaars where merchants from China, Persia, India, and the Mediterranean exchanged spices, grains, and culinary techniques. These early markets were among the first truly multicultural commercial spaces (Hansen, 2012).</p>
+    <p class="s-text">In the 19th and early 20th centuries, waves of mass migration from Europe to the Americas gave rise to iconic market districts. New York's Lower East Side, for instance, became home to Jewish delis, Italian salumerias, and German bakeries, each serving as a lifeline to the cultures left behind. Pushcart markets lined the streets, with vendors selling foods that simply could not be found elsewhere in America (Gabaccia, 1998).</p>
+    <p class="s-text">The post-World War II era brought new waves of migration from Asia, Africa, and Latin America. Chinatowns, Little Saigons, and Latin American mercados emerged in cities worldwide. By the late 20th century, globalization accelerated this process: Turkish d&ouml;ner shops appeared in Berlin, Indian spice stores in London, and Korean grocery marts in Los Angeles.</p>
+    <p class="s-text">Today, migrant food markets continue to evolve. The rise of e-commerce and social media has allowed small ethnic grocery businesses to reach customers far beyond their neighborhoods, creating digital extensions of the traditional market experience (Ray, 2016).</p>
+    <div class="s-quote">"Tell me what you eat, and I will tell you who you are."<cite>&mdash; Jean Anthelme Brillat-Savarin, The Physiology of Taste (1825)</cite></div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ 04 FOOD & CULTURAL IDENTITY ═══ -->
+<div class="section-dark" id="food">
+<div class="s-inner">
+  <div class="s-label s-label--gold">04 &middot; Food &amp; Cultural Identity</div>
+  <h2 class="s-title s-title--dark">How Food Preserves Culture</h2>
+  <p class="s-lead s-lead--light">For migrants, cooking and eating traditional food is one of the most powerful acts of cultural preservation &mdash; a daily ritual that connects the present to the homeland.</p>
+  <p class="s-text s-text--light">Food is deeply intertwined with cultural identity. Anthropologists have long recognized that food practices &mdash; what we eat, how we prepare it, and who we share it with &mdash; are among the most enduring markers of cultural belonging (Mintz &amp; Du Bois, 2002). For immigrant communities, the kitchen and the marketplace become spaces of cultural memory, where recipes passed down through generations serve as tangible links to ancestral homelands.</p>
+  <p class="s-text s-text--light">Consider the role of kimchi in Korean diaspora communities, or the importance of halal butchers for Muslim immigrants, or the central place of tortillerias in Mexican neighborhoods abroad. These foods are not merely sustenance; they are identity. When a Somali family in Minneapolis prepares canjeero (flatbread) or an Indian grandmother in Leicester grinds her own garam masala, they are performing acts of cultural continuity that resist the erasure that migration can bring (Adapon, 2008).</p>
+  <p class="s-text s-text--light">Migrant food markets facilitate this preservation by stocking ingredients that mainstream supermarkets do not carry &mdash; from specific chili varieties and fermented pastes to particular cuts of meat and regional produce. Without these markets, immigrants would be cut off from a fundamental part of their cultural practice.</p>
+  <p class="s-text s-text--light">At the same time, these markets are spaces of culinary fusion. Second-generation immigrants often blend their parents' cuisine with local flavors, creating entirely new food traditions &mdash; a process scholars call "culinary creolization" (Highmore, 2008). The result is the rich, hybrid food culture visible in cities around the world.</p>
+</div>
+</div>
+
+<!-- ═══ 05 LANGUAGE ═══ -->
+<section class="section" id="language">
+<div class="s-grid">
+  <div class="s-sidebar">
+    <div class="s-label s-label--ember">05 &middot; Language in Markets</div>
+  </div>
+  <div>
+    <h2 class="s-title">Multilingual Spaces &amp; Cross-Cultural Communication</h2>
+    <p class="s-lead">Migrant markets are among the most linguistically diverse places on Earth &mdash; spaces where five, ten, or even twenty languages might be heard in a single afternoon.</p>
+    <p class="s-text">Walk through any large immigrant market and you encounter a symphony of languages. Handwritten signs in Arabic, Vietnamese, Amharic, or Tagalog line the shelves. Vendors switch between languages mid-sentence. Customers negotiate prices in a mixture of their mother tongue, the host country language, and the universal language of gesture (Blommaert, 2010).</p>
+    <p class="s-text">Linguists call this phenomenon "translanguaging" &mdash; the fluid use of multiple languages as a single integrated communication system. In migrant markets, translanguaging is not an exception; it is the norm. A shopkeeper in a Queens grocery store might greet a customer in Urdu, explain a product in English, and call to a colleague in Punjabi, all within seconds (Garc&iacute;a &amp; Wei, 2014).</p>
+    <p class="s-text">These multilingual environments serve critical social functions. For newly arrived immigrants, markets provide spaces where their language is understood, reducing the isolation that often accompanies resettlement. For the broader community, they offer exposure to linguistic diversity and opportunities for intercultural exchange.</p>
+    <p class="s-text">The signage itself tells a story. Bilingual or trilingual labels on products reflect the market's customer base. Menus written in multiple scripts serve as informal language-learning tools. Even the arrangement of products &mdash; spices grouped by cuisine rather than alphabetically, for instance &mdash; encodes cultural knowledge that transcends language (Pennycook &amp; Otsuji, 2015).</p>
+  </div>
+</div>
+</section>
+
+<!-- ═══ 06 ECONOMIC ═══ -->
+<div class="section-dark" id="economic">
+<div class="s-inner">
+  <div class="s-label s-label--gold">06 &middot; Economic Opportunities</div>
+  <h2 class="s-title s-title--dark">Migrant Entrepreneurship &amp; Small Food Businesses</h2>
+  <p class="s-lead s-lead--light">Immigrant food businesses are economic engines &mdash; creating jobs, revitalizing neighborhoods, and contributing billions to local economies.</p>
+  <p class="s-text s-text--light">Migrant food entrepreneurship is a major economic force worldwide. In the United States alone, immigrants are nearly twice as likely to start a business as native-born citizens, and food-related businesses are among the most common (Fairlie &amp; Lofstrom, 2015). From corner bodegas to restaurant empires, immigrant food businesses generate employment, tax revenue, and economic activity that ripples through entire communities.</p>
+  <p class="s-text s-text--light">These businesses often revitalize declining commercial areas. Neighborhoods that mainstream businesses have abandoned frequently experience renewal when immigrant entrepreneurs move in, opening markets, bakeries, and restaurants that draw customers from across the city. Research shows that immigrant-dense neighborhoods often have lower commercial vacancy rates and stronger local economies (Kallick, 2015).</p>
+  <p class="s-text s-text--light">Beyond direct economic impact, migrant food markets create supply chains that connect local communities to global networks. A small Ethiopian grocery in Washington, D.C. might source teff flour from farms in Addis Ababa, injera from a local bakery, and berbere spice from a distributor in the Midwest &mdash; linking continents through commerce.</p>
+
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-num">28%</div><div class="stat-label">of U.S. small businesses are immigrant-owned</div></div>
+    <div class="stat-card"><div class="stat-num">$80B+</div><div class="stat-label">annual revenue from immigrant food businesses in the U.S.</div></div>
+    <div class="stat-card"><div class="stat-num">4.7M</div><div class="stat-label">jobs created by immigrant entrepreneurs in the U.S.</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ 07 CHALLENGES ═══ -->
+<section class="section" id="challenges">
+<div class="s-grid">
+  <div class="s-sidebar">
+    <div class="s-label s-label--ember">07 &middot; Challenges</div>
+  </div>
+  <div>
+    <h2 class="s-title">Challenges Migrants Face</h2>
+    <p class="s-lead">Despite their contributions, migrant food entrepreneurs navigate a landscape of legal complexity, cultural bias, and systemic barriers.</p>
+
+    <div class="challenge-item"><div class="challenge-icon">&#9878;&#65039;</div><div><h3>Legal &amp; Regulatory Barriers</h3><p>Immigration status, work permits, and business licensing requirements create significant obstacles. Many migrants lack the documentation needed to open bank accounts, secure loans, or sign commercial leases. Health and safety regulations, while important, can be particularly difficult to navigate for entrepreneurs unfamiliar with the host country's bureaucratic systems (Kloosterman &amp; Rath, 2003).</p></div></div>
+
+    <div class="challenge-item"><div class="challenge-icon">&#127760;</div><div><h3>Cultural Barriers &amp; Misunderstanding</h3><p>Unfamiliar foods and cooking methods can provoke suspicion or hostility from non-immigrant neighbors. Markets that sell live animals, fermented products, or strong-smelling spices sometimes face complaints rooted more in cultural discomfort than genuine health concerns. The "ethnic food" label itself can be reductive, flattening diverse culinary traditions into a single category (Ray, 2016).</p></div></div>
+
+    <div class="challenge-item"><div class="challenge-icon">&#128683;</div><div><h3>Discrimination &amp; Xenophobia</h3><p>Migrant business owners may face verbal harassment, vandalism, or discriminatory enforcement of regulations. Studies show that immigrant-owned businesses are more likely to receive fines for minor infractions compared to native-owned businesses in the same area. In periods of anti-immigrant sentiment, these markets can become targets (Rath &amp; Kloosterman, 2000).</p></div></div>
+
+    <div class="challenge-item"><div class="challenge-icon">&#128176;</div><div><h3>Financial Exclusion</h3><p>Limited access to credit and banking services forces many migrant entrepreneurs to rely on personal savings or informal lending networks. Without access to conventional financing, expanding or modernizing a business becomes extremely difficult, trapping many in a cycle of precarious small-scale operation.</p></div></div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ 08-10 CASE STUDIES ═══ -->
+<div class="section-cream" id="cases">
+<div class="s-inner">
+  <div class="s-label s-label--ember">08&ndash;10 &middot; Case Studies</div>
+  <h2 class="s-title">Migrant Markets Around the World</h2>
+  <p class="s-lead">Three continents, three stories &mdash; each revealing how migrant food markets adapt to local conditions while preserving universal patterns of cultural resilience.</p>
+
+  <div class="case-cards">
+    <div class="case-card">
+      <div class="case-top">
+        <div class="case-flag">&#127482;&#127480;</div>
+        <h3>United States</h3>
+        <p>America's immigrant food landscape is among the most diverse on Earth.</p>
+      </div>
+      <div class="case-body">
+        <p>Cities like New York, Los Angeles, and Houston host thousands of immigrant-operated food businesses. New York City's Jackson Heights neighborhood alone features markets and restaurants representing more than 160 nationalities. The Mexican-American mercado culture in the Southwest, Korean supermarkets like H Mart, and East African groceries in the Midwest each represent distinct models of migrant market entrepreneurship. The U.S. market benefits from a relatively open commercial environment, though immigration policy creates uncertainty for undocumented entrepreneurs (Zukin, 2010).</p>
+      </div>
+    </div>
+    <div class="case-card">
+      <div class="case-top">
+        <div class="case-flag">&#127466;&#127482;</div>
+        <h3>Europe</h3>
+        <p>European cities showcase centuries of migrant market tradition alongside modern tensions.</p>
+      </div>
+      <div class="case-body">
+        <p>London's Brixton Market has been a hub for Caribbean food culture since the 1940s. Berlin's T&uuml;rkischer Markt along the Maybachufer canal draws thousands weekly with Turkish, Arabic, and North African foods. Paris's march&eacute;s feature produce from West Africa and the Maghreb. However, European markets increasingly face gentrification pressures, with rising rents displacing the very immigrant entrepreneurs who made these neighborhoods attractive. The tension between preservation and development remains a central challenge across the continent (Hall, 2015).</p>
+      </div>
+    </div>
+    <div class="case-card">
+      <div class="case-top">
+        <div class="case-flag">&#127759;</div>
+        <h3>Asia</h3>
+        <p>Asia's migrant markets reflect complex regional migration patterns.</p>
+      </div>
+      <div class="case-body">
+        <p>Singapore's hawker centers bring together Malay, Chinese, Indian, and Indonesian culinary traditions in a single space, recognized by UNESCO as intangible cultural heritage. In the Gulf states, South Asian migrant workers have created vibrant informal markets that operate alongside the region's gleaming malls. Japan's Shin-Okubo district in Tokyo serves as a Korean and Southeast Asian food hub, while Malaysia's night markets blend Malay, Chinese, and Indian cuisines. These Asian examples demonstrate that migrant markets thrive even in societies with very different attitudes toward immigration (Tarulevicz, 2013).</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ 11 PUBLIC ENGAGEMENT ═══ -->
+<section class="section" id="engagement">
+<div class="s-grid">
+  <div class="s-sidebar">
+    <div class="s-label s-label--ember">11 &middot; Public Engagement</div>
+  </div>
+  <div>
+    <h2 class="s-title">Why Migrant Markets Matter to Everyone</h2>
+    <p class="s-lead">Migrant food markets are not just important to immigrant communities &mdash; they enrich the social and cultural life of entire cities.</p>
+    <p class="s-text">Research consistently shows that diverse food environments improve quality of life, promote cross-cultural understanding, and strengthen community cohesion. When people shop at immigrant markets, they engage in a form of everyday multiculturalism &mdash; casual, repeated interactions across cultural lines that gradually build familiarity and reduce prejudice (Wise &amp; Velayutham, 2009).</p>
+    <p class="s-text">Cities that support migrant food markets &mdash; through favorable zoning, small business grants, and cultural heritage protections &mdash; reap significant benefits. These include tourism revenue (food tourism is one of the fastest-growing travel segments), neighborhood revitalization, and stronger social networks that make communities more resilient.</p>
+    <p class="s-text">Community organizations, food cooperatives, and municipal programs play vital roles in supporting migrant food entrepreneurs. Initiatives like shared commercial kitchens, multilingual business assistance programs, and cultural market events help bridge the gap between immigrant business owners and the resources they need to thrive.</p>
+    <p class="s-text">Ultimately, supporting migrant food markets is an investment in cultural diversity, economic vitality, and the human connections that make cities worth living in. Every spice purchased, every unfamiliar dish tried, every conversation shared across a market counter is a small act of solidarity with the global story of migration.</p>
+  </div>
+</div>
+</section>
+
+<!-- ═══ VIDEO ═══ -->
+<div class="section-accent" id="video-section">
+<div class="s-inner" style="text-align:center;">
+  <div class="s-label s-label--light" style="justify-content:center">Project Video</div>
+  <h2 class="s-title s-title--dark" style="max-width:600px;margin:0 auto 16px">Watch Our Presentation</h2>
+  <p class="s-text s-text--light" style="max-width:500px;margin:0 auto 32px;text-align:center">A video presentation by our team exploring how immigrant food markets serve as cultural spaces.</p>
+  <div class="video-wrap">
+    <button class="play-btn" id="playBtn" onclick="showVideo()"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Watch Video</button>
+    <div class="video-frame" id="videoFrame"><iframe src="" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ TEAM ═══ -->
+<div class="section-dark" id="team-section">
+<div class="s-inner">
+  <div class="s-label s-label--gold" style="justify-content:center;display:flex">Meet the Team</div>
+  <h2 class="s-title s-title--dark" style="text-align:center">The 13 Students Behind This Project</h2>
+  <p class="s-text s-text--light" style="text-align:center;max-width:550px;margin:0 auto 12px">This project was collaboratively built by students exploring how immigrant food markets shape culture, language, and community.</p>
+  <div class="team-grid">
+    <div class="member-card"><div class="member-photo">1</div><h4>Student 1</h4><div class="member-role">Home Page &amp; Design</div></div>
+    <div class="member-card"><div class="member-photo">2</div><h4>Student 2</h4><div class="member-role">Project Overview</div></div>
+    <div class="member-card"><div class="member-photo">3</div><h4>Student 3</h4><div class="member-role">Research Questions</div></div>
+    <div class="member-card"><div class="member-photo">4</div><h4>Student 4</h4><div class="member-role">History</div></div>
+    <div class="member-card"><div class="member-photo">5</div><h4>Student 5</h4><div class="member-role">Food &amp; Identity</div></div>
+    <div class="member-card"><div class="member-photo">6</div><h4>Student 6</h4><div class="member-role">Language</div></div>
+    <div class="member-card"><div class="member-photo">7</div><h4>Student 7</h4><div class="member-role">Economics</div></div>
+    <div class="member-card"><div class="member-photo">8</div><h4>Student 8</h4><div class="member-role">Challenges</div></div>
+    <div class="member-card"><div class="member-photo">9</div><h4>Student 9</h4><div class="member-role">Case Study: USA</div></div>
+    <div class="member-card"><div class="member-photo">10</div><h4>Student 10</h4><div class="member-role">Case Study: Europe</div></div>
+    <div class="member-card"><div class="member-photo">11</div><h4>Student 11</h4><div class="member-role">Case Study: Asia</div></div>
+    <div class="member-card"><div class="member-photo">12</div><h4>Student 12</h4><div class="member-role">Public Engagement</div></div>
+    <div class="member-card"><div class="member-photo">13</div><h4>Student 13</h4><div class="member-role">Conclusion</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ REFLECTIONS ═══ -->
+<section class="section" id="reflections">
+<div style="text-align:center;max-width:700px;margin:0 auto">
+  <div class="s-label s-label--ember" style="justify-content:center;display:flex">Personal Reflections</div>
+  <h2 class="s-title">What We Learned</h2>
+  <p class="s-text" style="text-align:center;margin:0 auto 16px;max-width:560px">Each team member reflects on their key learnings from this course, their personal motto, and how this experience applies to their life.</p>
+  <p class="s-text" style="text-align:center;color:var(--clay);font-style:italic">Individual reflections will be added by each student.</p>
+</div>
+</section>
+
+<div class="color-divider"></div>
+
+<!-- ═══ 12 CONCLUSION & REFERENCES ═══ -->
+<div class="section-cream" id="conclusion">
+<div class="s-inner">
+  <div class="s-grid">
+    <div class="s-sidebar">
+      <div class="s-label s-label--ember">12 &middot; Conclusion</div>
+    </div>
+    <div>
+      <h2 class="s-title">Conclusion</h2>
+      <p class="s-text">Immigrant food markets are far more than commercial spaces. They are cultural institutions that preserve identity, foster multilingual communication, drive economic growth, and build bridges between communities. From the bustling mercados of the American Southwest to the hawker centers of Singapore, these markets demonstrate a universal truth: when people share food, they share humanity.</p>
+      <p class="s-text">Our research across three continents reveals consistent patterns. Migrant markets serve as anchors for newcomers, engines of local economies, and spaces where the world's cultures meet in the most accessible way possible &mdash; over a shared meal. The challenges these markets face &mdash; legal barriers, gentrification, discrimination &mdash; are challenges that reflect broader societal attitudes toward immigration and diversity.</p>
+      <p class="s-text">Supporting migrant food markets is not charity; it is an investment in the cultural richness and economic vitality of our communities. As migration continues to reshape the world's cities, these markets will only grow in importance as spaces where difference is not merely tolerated but celebrated &mdash; one dish at a time.</p>
+
+      <h2 class="s-title" style="margin-top:56px">References</h2>
+      <ul class="ref-list">
+        <li>Adapon, J. (2008). <em>Culinary art and anthropology</em>. Berg Publishers.</li>
+        <li>Blommaert, J. (2010). <em>The sociolinguistics of globalization</em>. Cambridge University Press.</li>
+        <li>Fairlie, R. W., &amp; Lofstrom, M. (2015). Immigration and entrepreneurship. In B. R. Chiswick &amp; P. W. Miller (Eds.), <em>Handbook of the economics of international migration</em> (Vol. 1, pp. 877&ndash;911). Elsevier.</li>
+        <li>Gabaccia, D. R. (1998). <em>We are what we eat: Ethnic food and the making of Americans</em>. Harvard University Press.</li>
+        <li>Garc&iacute;a, O., &amp; Wei, L. (2014). <em>Translanguaging: Language, bilingualism and education</em>. Palgrave Macmillan.</li>
+        <li>Hall, S. M. (2015). Migrant urbanisms: Ordinary cities and everyday resistance. <em>Sociology</em>, 49(5), 853&ndash;869.</li>
+        <li>Hansen, V. (2012). <em>The Silk Road: A new history</em>. Oxford University Press.</li>
+        <li>Highmore, B. (2008). Alimentary agents: Food, cultural theory and multiculturalism. <em>Journal of Intercultural Studies</em>, 29(4), 381&ndash;398.</li>
+        <li>Kallick, D. D. (2015). <em>Immigrant small business owners</em>. Fiscal Policy Institute.</li>
+        <li>Kloosterman, R., &amp; Rath, J. (2003). <em>Immigrant entrepreneurs: Venturing abroad in the age of globalization</em>. Berg Publishers.</li>
+        <li>Manzo, L. C. (2005). For better or worse: Exploring multiple dimensions of place meaning. <em>Journal of Environmental Psychology</em>, 25(1), 67&ndash;86.</li>
+        <li>Mintz, S. W., &amp; Du Bois, C. M. (2002). The anthropology of food and eating. <em>Annual Review of Anthropology</em>, 31(1), 99&ndash;119.</li>
+        <li>Oldenburg, R. (1989). <em>The great good place</em>. Paragon House.</li>
+        <li>Pennycook, A., &amp; Otsuji, E. (2015). <em>Metrolingualism: Language in the city</em>. Routledge.</li>
+        <li>Rath, J., &amp; Kloosterman, R. (2000). Outsiders' business: A critical review of research on immigrant entrepreneurship. <em>International Migration Review</em>, 34(3), 657&ndash;681.</li>
+        <li>Ray, K. (2016). <em>The ethnic restaurateur</em>. Bloomsbury Academic.</li>
+        <li>Tarulevicz, N. (2013). <em>Eating her curries and kway: A cultural history of food in Singapore</em>. University of Illinois Press.</li>
+        <li>Wise, A., &amp; Velayutham, S. (2009). <em>Everyday multiculturalism</em>. Palgrave Macmillan.</li>
+        <li>Zukin, S. (2010). <em>Naked city: The death and life of authentic urban places</em>. Oxford University Press.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="site-footer">
+  <div class="footer-brand">Markets of Migration</div>
+  <div class="footer-info">Thursday Section &middot; Media History &middot; 2026 &middot; A Collaborative Project by 13 Students</div>
+  <div class="footer-links">
+    <a href="#hero">Home</a>
+    <a href="#overview">Overview</a>
+    <a href="#history">History</a>
+    <a href="#food">Food</a>
+    <a href="#language">Language</a>
+    <a href="#economic">Economics</a>
+    <a href="#challenges">Challenges</a>
+    <a href="#cases">Case Studies</a>
+    <a href="#engagement">Engagement</a>
+    <a href="#conclusion">Conclusion</a>
+    <a href="#team-section">Team</a>
+  </div>
+</footer>
+
+<script>
+// Navbar scroll effect
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  if(window.scrollY>80){nav.classList.remove('nav--top');nav.classList.add('nav--scrolled')}
+  else{nav.classList.add('nav--top');nav.classList.remove('nav--scrolled')}
+});
+
+function openMenu(){document.getElementById('fullmenu').classList.add('open');document.body.style.overflow='hidden'}
+function closeMenu(){document.getElementById('fullmenu').classList.remove('open');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
+
+function showVideo(){
+  document.getElementById('playBtn').classList.add('hidden');
+  const f=document.getElementById('videoFrame');
+  f.classList.add('visible');
+  const iframe=f.querySelector('iframe');
+  if(iframe&&iframe.src)iframe.src=iframe.src+(iframe.src.includes('?')?'&':'?')+'autoplay=1';
+}
+
+// Scroll reveal
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}});
+},{threshold:0.08});
+document.querySelectorAll('.section,.section-dark,.section-cream,.section-accent').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(30px)';el.style.transition='opacity 0.7s ease, transform 0.7s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
